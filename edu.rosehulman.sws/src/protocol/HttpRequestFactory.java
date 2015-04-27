@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Not used for now
  * 
  * @author Chandan R. Rupakheti (rupakhcr@clarkson.edu)
  */
@@ -58,7 +59,6 @@ public class HttpRequestFactory {
 		try {
 			request = this.requestMap.get(requestType).getDeclaredConstructor(Class.forName("java.io.File")).
 					newInstance(file);
-//			request.runRequest(connection);
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException |
 				InvocationTargetException | NoSuchMethodException | SecurityException |
 				ClassNotFoundException exception) {

@@ -58,17 +58,14 @@ public class POSTRequest extends HttpRequest {
 //		File file = new File(rootDirectory + this.uri);
 		System.out.println("writing to " + rootDirectory + this.uri);
 		try {
+			//create new file or overwrite existing file with contents of request body 
 			PrintWriter writer = new PrintWriter(rootDirectory + this.uri, "UTF-8");
 			writer.write(this.body);
 			writer.close();
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		// Check if the file exists
-		// TODO: improve if else flow by calling createResponse once at the end
 
-		// File does not exist so let's create 404 file not found code
-//		System.out.println("first not found: " + file.getAbsolutePath());
 		response = hrf.createResponse(new File(rootDirectory + this.uri), Protocol.CLOSE,
 				Protocol.OK_CODE);
 		

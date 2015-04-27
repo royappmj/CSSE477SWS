@@ -75,7 +75,7 @@ public class ConnectionHandler implements Runnable {
 		File file = null;
 		
 		HttpResponseFactory responseFact = new HttpResponseFactory();
-		HttpRequestFactory requestFact = new HttpRequestFactory();
+//		HttpRequestFactory requestFact = new HttpRequestFactory();
 
 		try {
 			inStream = this.socket.getInputStream();
@@ -115,7 +115,6 @@ public class ConnectionHandler implements Runnable {
 		} catch (Exception e) {
 			e.printStackTrace();
 			// For any other error, we will create bad request response as well
-//			System.out.println("second");
 			response = responseFact.createResponse(null, Protocol.CLOSE,
 					Protocol.BAD_REQUEST_CODE);
 		}
@@ -148,13 +147,9 @@ public class ConnectionHandler implements Runnable {
 				// "request.version" string ignoring the case of the letters in both strings
 				// TODO: Fill in the rest of the code here
 			} else {
+				//get appropriate response from running the given request
 				response = request.runRequest(response, this.server, file, responseFact);
-//				response = requestFact.createRequest(file, request.getMethod()).runRequest(response,
-//						this.server, file, responseFact);
 			}
-//			else if (request.getMethod().equalsIgnoreCase(Protocol.GET)) {
-//				
-//			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -44,22 +44,31 @@ public abstract class HttpRequest {
 	protected String uri;
 	protected String version;
 	protected Map<String, String> header;
+	/**
+	 * map containing the different kinds of requests
+	 */
 	protected static Map<String, HttpRequest> methodsMap = new HashMap<String, HttpRequest>() {{
 		put(Protocol.GET, new GETRequest(null));
 		put(Protocol.POST, new POSTRequest(null));
 		put(Protocol.PUT, new PUTRequest(null));
+		put(Protocol.DELETE, new DELETERequest(null));
 	}};
 	protected char[] body;
 	protected File file;
 	
 	public HttpRequest(File file) {
 		this.header = new HashMap<String, String>();
-//		methodsMap = new HashMap<String, HttpRequest>();
-//		methodsMap.put(Protocol.GET, new GETRequest());
 		this.body = new char[0];
 		this.file = file;
 	}
 	
+	/**
+	 * @param response
+	 * @param server
+	 * @param postFile
+	 * @param hrf
+	 * @return response generated from executing the request
+	 */
 	public abstract HttpResponse runRequest(HttpResponse response, Server server,
 			File postFile, HttpResponseFactory hrf);
 	
@@ -137,7 +146,7 @@ public abstract class HttpRequest {
 		String tMethod = tokenizer.nextToken();
 		HttpRequest request = methodsMap.get(tMethod);
 		
-		request.method = tMethod;					// GET
+		request.method = tMethod;					// request method
 		request.uri = tokenizer.nextToken();		// /somedir/page.html
 		request.version = tokenizer.nextToken();	// HTTP/1.1
 		

@@ -56,7 +56,7 @@ public class DELETERequest extends HttpRequest {
 	@Override
 	public HttpResponse runRequest(HttpResponse response, Server server, File postFile,
 			HttpResponseFactory hrf) {
-		// Handling POST request here
+		// Handling DELETE request here
 		// Get root directory path from server
 		String rootDirectory = server.getRootDirectory();
 		String dir = rootDirectory + this.uri;
@@ -73,9 +73,11 @@ public class DELETERequest extends HttpRequest {
 			boolean success = f.delete();
 			
 			if(success) {
+				//file was deleted
 				response = hrf.createResponse(null, Protocol.CLOSE, Protocol.OK_CODE);
 			}
 			else {
+				//file couldn't be deleted
 				response = hrf.createResponse(null, Protocol.CLOSE, Protocol.NOT_FOUND_CODE);
 			}
 		}
