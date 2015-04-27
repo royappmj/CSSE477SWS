@@ -98,6 +98,7 @@ public class ConnectionHandler implements Runnable {
 		HttpRequest request = null;
 		HttpResponse response = null;
 		try {
+			if(inStream == null) System.out.println("null");
 			request = HttpRequest.read(inStream);
 			System.out.println(request);
 		} catch (ProtocolException pe) {
@@ -105,6 +106,7 @@ public class ConnectionHandler implements Runnable {
 			// We know only two kind of exception is possible inside fromInputStream
 			// Protocol.BAD_REQUEST_CODE and Protocol.NOT_SUPPORTED_CODE
 			int status = pe.getStatus();
+//			System.out.println("first");
 			if (status == Protocol.BAD_REQUEST_CODE) {
 				response = responseFact.createResponse(null, Protocol.CLOSE,
 						Protocol.BAD_REQUEST_CODE);
@@ -113,6 +115,7 @@ public class ConnectionHandler implements Runnable {
 		} catch (Exception e) {
 			e.printStackTrace();
 			// For any other error, we will create bad request response as well
+//			System.out.println("second");
 			response = responseFact.createResponse(null, Protocol.CLOSE,
 					Protocol.BAD_REQUEST_CODE);
 		}
@@ -145,8 +148,9 @@ public class ConnectionHandler implements Runnable {
 				// "request.version" string ignoring the case of the letters in both strings
 				// TODO: Fill in the rest of the code here
 			} else {
-				requestFact.createRequest(file, request.getMethod()).runRequest(response,
-						this.server, file, responseFact);
+				response = request.runRequest(response, this.server, file, responseFact);
+//				response = requestFact.createRequest(file, request.getMethod()).runRequest(response,
+//						this.server, file, responseFact);
 			}
 //			else if (request.getMethod().equalsIgnoreCase(Protocol.GET)) {
 //				
@@ -159,6 +163,7 @@ public class ConnectionHandler implements Runnable {
 		// So this is a temporary patch for that problem and should be removed
 		// after a response object is created for protocol version mismatch.
 		if (response == null) {
+//			System.out.println("third");
 			response = responseFact.createResponse(null, Protocol.CLOSE,
 					Protocol.BAD_REQUEST_CODE);
 		}
