@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="12.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>670</x>
+      <y>30</y>
+      <w>210</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>HttpRequestFactory
+--
+--
+createRequest(String)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>890</x>
+      <y>30</y>
+      <w>210</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>HttpResponseFactory
+--
+--
+fillGeneralHeader(HttpResponse, String)
+createResponse(String)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Package</type>
+    <coordinates>
+      <x>40</x>
+      <y>660</y>
+      <w>590</w>
+      <h>400</h>
+    </coordinates>
+    <panel_attributes>gui
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>60</x>
+      <y>710</y>
+      <w>150</w>
+      <h>270</h>
+    </coordinates>
+    <panel_attributes>WebServer
+--
+serialVersionUID
+panelRunServer
+lblPortNumber
+txtPortNumber
+lblRootDirectory
+txtRootDirectory
+butSelect
+panelInput
+butStartServer
+butStopServer
+lblServiceRate
+txtServiceRate
+server
+rateUpdater
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>250</x>
+      <y>720</y>
+      <w>320</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>SpringUtilities
+--
+--
+printSizes(Component)
+makeGrid(Container, int, int, int, int, int, int, int)
+getConstraintsForCell(int, int, Container, int)
+makeCompactGrid(Container, int, int, int, int, int, int, int)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>370</x>
+      <y>880</y>
+      <w>210</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;private class&gt;&gt;
+ServiceRateUpdater
+--
+--
+WebServer()
+initComponents()
+addListeners()
+showSocketException(Exception)
+main(String[])</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Package</type>
+    <coordinates>
+      <x>80</x>
+      <y>0</y>
+      <w>1060</w>
+      <h>570</h>
+    </coordinates>
+    <panel_attributes>protocol
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>180</x>
+      <y>910</y>
+      <w>210</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;190;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Package</type>
+    <coordinates>
+      <x>700</x>
+      <y>680</y>
+      <w>740</w>
+      <h>290</h>
+    </coordinates>
+    <panel_attributes>server
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>750</x>
+      <y>730</y>
+      <w>210</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>HttpRequestStrategy
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>280</x>
+      <y>240</y>
+      <w>110</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>GetRequest
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>400</x>
+      <y>240</y>
+      <w>120</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>PostRequest
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>530</x>
+      <y>240</y>
+      <w>120</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>PutRequest
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>120</x>
+      <y>240</y>
+      <w>150</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>DeleteRequest
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>210</x>
+      <y>90</y>
+      <w>140</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>110;30;40;150</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>290</x>
+      <y>50</y>
+      <w>210</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;abstract&gt;&gt;
+HttpRequest
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>290</x>
+      <y>90</y>
+      <w>130</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>80;30;60;150</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>440</x>
+      <y>90</y>
+      <w>140</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>40;30;110;150</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>340</x>
+      <y>90</y>
+      <w>140</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>80;30;70;150</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>790</x>
+      <y>270</y>
+      <w>210</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;abstract&gt;&gt;
+HttpResponse
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
