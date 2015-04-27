@@ -29,6 +29,9 @@
 package protocol;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
 import server.Server;
 
@@ -43,7 +46,7 @@ public class GETRequest extends HttpRequest {
 	}
 	
 	@Override
-	public void runRequest(HttpResponse response, Server server, File postFile, HttpResponseFactory hrf) {
+	public HttpResponse runRequest(HttpResponse response, Server server, File postFile, HttpResponseFactory hrf) {
 		// Map<String, String> header = request.getHeader();
 		// String date = header.get("if-modified-since");
 		// String hostName = header.get("host");
@@ -77,9 +80,12 @@ public class GETRequest extends HttpRequest {
 			}
 		} else {
 			// File does not exist so let's create 404 file not found code
+			
 			response = hrf.createResponse(null, Protocol.CLOSE,
 					Protocol.NOT_FOUND_CODE);
 		}
+		
+		return response;
 		
 	}
 

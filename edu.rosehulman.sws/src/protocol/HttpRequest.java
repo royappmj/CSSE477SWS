@@ -46,6 +46,8 @@ public abstract class HttpRequest {
 	protected Map<String, String> header;
 	protected static Map<String, HttpRequest> methodsMap = new HashMap<String, HttpRequest>() {{
 		put(Protocol.GET, new GETRequest(null));
+		put(Protocol.POST, new POSTRequest(null));
+		put(Protocol.PUT, new PUTRequest(null));
 	}};
 	protected char[] body;
 	protected File file;
@@ -58,7 +60,7 @@ public abstract class HttpRequest {
 		this.file = file;
 	}
 	
-	public abstract void runRequest(HttpResponse response, Server server,
+	public abstract HttpResponse runRequest(HttpResponse response, Server server,
 			File postFile, HttpResponseFactory hrf);
 	
 	/**
@@ -138,6 +140,8 @@ public abstract class HttpRequest {
 		request.method = tMethod;					// GET
 		request.uri = tokenizer.nextToken();		// /somedir/page.html
 		request.version = tokenizer.nextToken();	// HTTP/1.1
+		
+		System.out.println("URI in read: " + request.uri);
 		
 		// Rest of the request is a header that maps keys to values
 		// e.g. Host: www.rose-hulman.edu
