@@ -59,7 +59,7 @@ public class POSTRequest extends HttpRequest {
 		System.out.println("writing to " + rootDirectory + this.uri);
 		try {
 			PrintWriter writer = new PrintWriter(rootDirectory + this.uri, "UTF-8");
-			writer.write(this.body);
+			writer.write(new String(this.body));
 			writer.close();
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
 			e.printStackTrace();

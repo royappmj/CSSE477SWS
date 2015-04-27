@@ -63,11 +63,11 @@ public class PUTRequest extends HttpRequest {
 		File file = new File(dir);
 		if(!file.exists()) {
 			try {
-				PrintWriter writer = new PrintWriter(rootDirectory + this.uri, "UTF-8");
-				writer.print(this.body);
+				PrintWriter writer = new PrintWriter(dir, "UTF-8");
+				writer.print(new String(this.body));
 				writer.close();
 				
-				response = hrf.createResponse(new File(rootDirectory + this.uri), Protocol.CLOSE,
+				response = hrf.createResponse(new File(dir), Protocol.CLOSE,
 						Protocol.OK_CODE);
 			} catch (FileNotFoundException | UnsupportedEncodingException e) {
 				e.printStackTrace();
@@ -77,11 +77,13 @@ public class PUTRequest extends HttpRequest {
 		}
 		else {
 			try {
-				PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("myfile.txt", true)));
-				writer.print(this.body);
+				PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(dir, true)));
+				// Need to construct a new string here so that the encoding renders the ASCII text correctly
+				System.out.println("Body is: " + new String(this.body) + "----------------");
+				writer.write("" + new String(this.body));
 				writer.close();
 				
-				response = hrf.createResponse(new File(rootDirectory + this.uri), Protocol.CLOSE,
+				response = hrf.createResponse(new File(dir), Protocol.CLOSE,
 						Protocol.OK_CODE);
 			} catch (IOException exception) {
 				exception.printStackTrace();

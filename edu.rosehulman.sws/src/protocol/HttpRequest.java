@@ -48,6 +48,7 @@ public abstract class HttpRequest {
 		put(Protocol.GET, new GETRequest(null));
 		put(Protocol.POST, new POSTRequest(null));
 		put(Protocol.PUT, new PUTRequest(null));
+		put(Protocol.DELETE, new DELETERequest(null));
 	}};
 	protected char[] body;
 	protected File file;
