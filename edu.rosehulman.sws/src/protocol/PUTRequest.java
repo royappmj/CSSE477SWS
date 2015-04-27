@@ -1,6 +1,6 @@
 /*
- * POSTRequest.java
- * Apr 24, 2015
+ * PUTRequest.java
+ * Apr 27, 2015
  *
  * Simple Web Server (SWS) for EE407/507 and CS455/555
  * 
@@ -28,8 +28,11 @@
  
 package protocol;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
@@ -39,12 +42,12 @@ import server.Server;
  * 
  * @author Chandan R. Rupakheti (rupakhcr@clarkson.edu)
  */
-public class POSTRequest extends HttpRequest {
+public class PUTRequest extends HttpRequest {
 
 	/**
 	 * @param file
 	 */
-	public POSTRequest(File file) {
+	public PUTRequest(File file) {
 		super(file);
 	}
 
@@ -54,26 +57,38 @@ public class POSTRequest extends HttpRequest {
 		// Handling POST request here
 		// Get root directory path from server
 		String rootDirectory = server.getRootDirectory();
+		String dir = rootDirectory + this.uri;
 		// Combine them together to form absolute file path
-//		File file = new File(rootDirectory + this.uri);
-		System.out.println("writing to " + rootDirectory + this.uri);
-		try {
-			PrintWriter writer = new PrintWriter(rootDirectory + this.uri, "UTF-8");
-			writer.write(this.body);
-			writer.close();
-		} catch (FileNotFoundException | UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		// Check if the file exists
-		// TODO: improve if else flow by calling createResponse once at the end
+		System.out.println("writing to " + dir);
+		File file = new File(dir);
+		if(!file.exists()) {
+			try {
+				PrintWriter writer = new PrintWriter(rootDirectory + this.uri, "UTF-8");
+				writer.print(this.body);
+				writer.close();
+				
+				response = hrf.createResponse(new File(rootDirectory + this.uri), Protocol.CLOSE,
+						Protocol.OK_CODE);
+			} catch (FileNotFoundException | UnsupportedEncodingException e) {
+				e.printStackTrace();
+				response = hrf.createResponse(null, Protocol.CLOSE, Protocol.NOT_FOUND_CODE);
+			}
 
-		// File does not exist so let's create 404 file not found code
-//		System.out.println("first not found: " + file.getAbsolutePath());
-		response = hrf.createResponse(new File(rootDirectory + this.uri), Protocol.CLOSE,
-				Protocol.OK_CODE);
-		
+		}
+		else {
+			try {
+				PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("myfile.txt", true)));
+				writer.print(this.body);
+				writer.close();
+				
+				response = hrf.createResponse(new File(rootDirectory + this.uri), Protocol.CLOSE,
+						Protocol.OK_CODE);
+			} catch (IOException exception) {
+				exception.printStackTrace();
+				response = hrf.createResponse(file, Protocol.CLOSE, Protocol.BAD_REQUEST_CODE);
+			}
+		}
 		return response;
-		
 	}
-	
+
 }
