@@ -32,6 +32,7 @@ import protocol.HttpResponse;
 import protocol.HttpResponseFactory;
 import protocol.Protocol;
 import protocol.ProtocolException;
+import protocol.ServletProcessor;
 
 /**
  * This class is responsible for handling a incoming request by creating a {@link HttpRequest}
@@ -75,7 +76,6 @@ public class ConnectionHandler implements Runnable {
 		File file = null;
 		
 		HttpResponseFactory responseFact = new HttpResponseFactory();
-//		HttpRequestFactory requestFact = new HttpRequestFactory();
 
 		try {
 			inStream = this.socket.getInputStream();
@@ -100,13 +100,14 @@ public class ConnectionHandler implements Runnable {
 		try {
 			if(inStream == null) System.out.println("null");
 			request = HttpRequest.read(inStream);
-			System.out.println(request);
+			
+//			if(request.getUri().startsWith("/plugins/"))
+			System.out.println(request.getUri());
 		} catch (ProtocolException pe) {
 			// We have some sort of protocol exception. Get its status code and create response
 			// We know only two kind of exception is possible inside fromInputStream
 			// Protocol.BAD_REQUEST_CODE and Protocol.NOT_SUPPORTED_CODE
 			int status = pe.getStatus();
-//			System.out.println("first");
 			if (status == Protocol.BAD_REQUEST_CODE) {
 				response = responseFact.createResponse(null, Protocol.CLOSE,
 						Protocol.BAD_REQUEST_CODE);
@@ -148,7 +149,10 @@ public class ConnectionHandler implements Runnable {
 				// TODO: Fill in the rest of the code here
 			} else {
 				//get appropriate response from running the given request
-				response = request.runRequest(response, this.server, file, responseFact);
+				if(request.getUri().startsWith("/plugins/")) {
+					ServletProcessor.process(request, response);
+				}
+				else response = request.runRequest(response, this.server, file, responseFact);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -158,7 +162,6 @@ public class ConnectionHandler implements Runnable {
 		// So this is a temporary patch for that problem and should be removed
 		// after a response object is created for protocol version mismatch.
 		if (response == null) {
-//			System.out.println("third");
 			response = responseFact.createResponse(null, Protocol.CLOSE,
 					Protocol.BAD_REQUEST_CODE);
 		}
