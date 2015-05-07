@@ -34,5 +34,5 @@ package protocol;
  */
 public interface Servlet {
 	
-	public void service(HttpRequest request, HttpResponse response);
+	public ServletResponse service(HttpRequest request, ServletResponse response);
 }

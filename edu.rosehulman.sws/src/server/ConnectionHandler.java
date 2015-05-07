@@ -25,14 +25,16 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 import protocol.HttpRequest;
-import protocol.HttpRequestFactory;
 import protocol.HttpResponse;
 import protocol.HttpResponseFactory;
 import protocol.Protocol;
 import protocol.ProtocolException;
 import protocol.ServletProcessor;
+import protocol.ServletResponse;
 
 /**
  * This class is responsible for handling a incoming request by creating a {@link HttpRequest}
@@ -44,15 +46,18 @@ import protocol.ServletProcessor;
 public class ConnectionHandler implements Runnable {
 	private Server server;
 	private Socket socket;
-//	private Map<String, HttpRequest> requestMap;
+	private Map<Integer, String> textMap;
 
 	public ConnectionHandler(Server server, Socket socket) {
 		this.server = server;
 		this.socket = socket;
-//		this.requestMap = new HashMap<String, HttpRequest>();
-//		System.out.println("reading");
-//		this.requestMap.put(Protocol.GET, new GETRequest());
-//		System.out.println("reading");
+		this.textMap = new HashMap<Integer, String>();
+		this.textMap.put(Protocol.OK_CODE, Protocol.OK_TEXT);
+		this.textMap.put(Protocol.BAD_REQUEST_CODE, Protocol.BAD_REQUEST_TEXT);
+		this.textMap.put(Protocol.NOT_FOUND_CODE, Protocol.NOT_FOUND_TEXT);
+//		this.textMap.put(Protocol.OK_CODE, Protocol.OK_TEXT);
+//		this.textMap.put(Protocol.OK_CODE, Protocol.OK_TEXT);
+
 	}
 
 	/**
@@ -139,6 +144,7 @@ public class ConnectionHandler implements Runnable {
 		}
 
 		// We reached here means no error so far, so let's process further
+		ServletResponse sResponse = null;
 		try {
 			// Fill in the code to create a response for version mismatch.
 			// You may want to use constants such as Protocol.VERSION, Protocol.NOT_SUPPORTED_CODE,
@@ -150,7 +156,15 @@ public class ConnectionHandler implements Runnable {
 			} else {
 				//get appropriate response from running the given request
 				if(request.getUri().startsWith("/plugins/")) {
-					ServletProcessor.process(request, response);
+					sResponse = new ServletResponse(Protocol.VERSION,
+							Protocol.OK_CODE, Protocol.OK_TEXT, new HashMap<String, String>(),
+							file, outStream, this.server);
+					sResponse.populateFields(Protocol.CLOSE);
+//					sResponse.write(outStream);
+					System.out.println("Request body is:\n" + new String(request.getBody()));
+					sResponse = ServletProcessor.process(request, sResponse);
+					sResponse.setText(this.textMap.get(sResponse.getStatus()));
+					sResponse.write(outStream);
 				}
 				else response = request.runRequest(response, this.server, file, responseFact);
 			}
@@ -168,7 +182,7 @@ public class ConnectionHandler implements Runnable {
 
 		try {
 			// Write response and we are all done so close the socket
-			response.write(outStream);
+			if(sResponse == null) response.write(outStream);
 			// System.out.println(response);
 			this.socket.close();
 		} catch (Exception e) {

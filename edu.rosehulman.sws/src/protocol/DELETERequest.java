@@ -28,15 +28,7 @@
  
 package protocol;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import server.Server;
 
@@ -65,7 +57,7 @@ public class DELETERequest extends HttpRequest {
 		File file = new File(dir);
 		if(!file.exists()) {
 			// Can't delete a file that doesn't exist
-				response = hrf.createResponse(null, Protocol.CLOSE, Protocol.NOT_FOUND_CODE);
+			response = hrf.createResponse(null, Protocol.CLOSE, Protocol.NOT_FOUND_CODE);
 
 		}
 		else {

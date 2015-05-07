@@ -41,10 +41,14 @@ import java.net.URLStreamHandler;
  * @author Chandan R. Rupakheti (rupakhcr@clarkson.edu)
  */
 public class ServletProcessor {
-	public static void process(HttpRequest request, HttpResponse response) {
+	public static ServletResponse process(HttpRequest request, ServletResponse response) {
 		String uri = request.getUri();
-		String servletName = uri.substring(uri.lastIndexOf("/") + 1);
-		String pluginName = uri.substring(uri.substring(1).indexOf('/') + 1, uri.lastIndexOf("/"));
+		//Relative URI
+		String locations[] = uri.split("/");
+		String pluginName = locations[2];
+		String servletName = locations[3];
+		request.setFilename(locations[4].substring(0, locations[4].contains("?") ?
+				locations[4].indexOf("?") : locations[4].length()));
 		URLClassLoader loader = null;
 
 		try {
@@ -52,7 +56,7 @@ public class ServletProcessor {
 			URLStreamHandler streamHandler = null;
 
 			URL[] urls = new URL[1];
-			File classPath = new File(System.getProperty("user.dir") + "/web/plugins" + pluginName + ".jar");
+			File classPath = new File(System.getProperty("user.dir") + "/web/plugins/" + pluginName + ".jar");
 			String repository = (new URL("file", null, classPath.getCanonicalPath())).toString();
 			urls[0] = new URL(null, repository, streamHandler);
 			loader = new URLClassLoader(urls);
@@ -73,10 +77,13 @@ public class ServletProcessor {
 
 		Servlet servlet = null;
 		try {
+			//Servlet Class
 			servlet = (Servlet) myClass.newInstance();
-			servlet.service(request, response);
+			return servlet.service(request, response);
 		} catch (Throwable e) {
 			System.out.println(e.toString());
+			response.setStatus(Protocol.BAD_REQUEST_CODE);
+			return response;
 		}
 	}
 }

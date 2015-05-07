@@ -26,8 +26,9 @@
  * http://clarkson.edu/~rupakhcr
  */
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
 import protocol.HttpRequest;
 import protocol.Protocol;
@@ -38,26 +39,34 @@ import protocol.ServletResponse;
  * 
  * @author Chandan R. Rupakheti (rupakhcr@clarkson.edu)
  */
-public class HelloWorldServlet implements Servlet {
+public class HelloWorldPost implements Servlet {
 
 	@Override
 	public ServletResponse service(HttpRequest request, ServletResponse response) {
-		// GET request servlet
-		try (OutputStream out = response.getWriter()) {
-			String content = "<html><head><title>TEST PAGE LOL</title></head><body>";
-			String content2 = "a line is here<br>now another <br></body></html>";
-			out.write(content.getBytes());
-			out.write(content2.getBytes());
+		// This is a POST request
+		// Get root directory path from server
+		String rootDirectory = response.getRootDirectory();
+		
+		try {
+			//create new file or overwrite existing file with contents of request body 
+			PrintWriter writer = new PrintWriter(rootDirectory + "/" + request.getFilename(), "UTF-8");
+			writer.write(request.getBody());
+			writer.close();
 			
-			response.setBody(content + content2);
+			response.setBody(new String(request.getBody()));
+			System.out.println("body in servlet\n" + response.getBody());
 			response.setStatus(Protocol.OK_CODE);
 			return response;
-		} catch (IOException exception) {
-			exception.printStackTrace();
+		} catch (FileNotFoundException e) {
+			
+			e.printStackTrace();
+			response.setStatus(Protocol.NOT_FOUND_CODE);
+			return response;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
 			response.setStatus(Protocol.BAD_REQUEST_CODE);
 			return response;
 		}
-		
 	}
 
 }

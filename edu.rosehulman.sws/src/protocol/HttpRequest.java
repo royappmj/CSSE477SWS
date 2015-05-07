@@ -43,6 +43,7 @@ public abstract class HttpRequest {
 	protected String method;
 	protected String uri;
 	protected String version;
+	protected String filename;
 	protected Map<String, String> header;
 	/**
 	 * map containing the different kinds of requests
@@ -88,6 +89,14 @@ public abstract class HttpRequest {
 	 */
 	public String getUri() {
 		return this.uri;
+	}
+	
+	public String getFilename() {
+		return this.filename;
+	}
+	
+	public void setFilename(String name) {
+		this.filename = name;
 	}
 
 	/**
@@ -148,6 +157,8 @@ public abstract class HttpRequest {
 		
 		request.method = tMethod;					// request method
 		request.uri = tokenizer.nextToken();		// /somedir/page.html
+		request.uri = request.uri.substring(0, request.uri.contains("?") ?
+				request.uri.indexOf("?") : request.uri.length());
 		request.version = tokenizer.nextToken();	// HTTP/1.1
 		
 		System.out.println("URI in read: " + request.uri);

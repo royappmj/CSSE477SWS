@@ -42,6 +42,7 @@ public abstract class HttpResponse {
 	protected String phrase;
 	protected Map<String, String> header;
 	protected File file;
+	protected String body;
 	
 	/**
 	 * Constructs a HttpResponse object using supplied parameter
@@ -72,17 +73,17 @@ public abstract class HttpResponse {
 	 * @param connection Supported values are {@link Protocol#OPEN} and {@link Protocol#CLOSE}.
 	 */
 	protected void fillGeneralHeader(String connection) {
-		// Lets add Connection header
+		// Let's add Connection header
 		this.put(Protocol.CONNECTION, connection);
 
-		// Lets add current date
+		// Let's add current date
 		Date date = Calendar.getInstance().getTime();
 		this.put(Protocol.DATE, date.toString());
 		
-		// Lets add server info
+		// Let's add server info
 		this.put(Protocol.Server, Protocol.getServerInfo());
 
-		// Lets add extra header with provider info
+		// Let's add extra header with provider info
 		this.put(Protocol.PROVIDER, Protocol.AUTHOR);
 	}
 
@@ -119,6 +120,18 @@ public abstract class HttpResponse {
 	 */
 	public File getFile() {
 		return this.file;
+	}
+	
+	public String getBody() {
+		return this.body;
+	}
+	
+	public void setBody(String body) {
+		this.body = body;
+	}
+	
+	public void setText(String t) {
+		this.phrase = t;
 	}
 
 	/**
@@ -184,6 +197,11 @@ public abstract class HttpResponse {
 			}
 			// Close the file input stream, we are done reading
 			inStream.close();
+		}
+		
+		if(this.getStatus() == Protocol.OK_CODE && this.body != null) {
+			System.out.println("body is\n" + this.body);
+			out.write(this.body.getBytes());
 		}
 		
 		// Flush the data so that outStream sends everything through the socket 

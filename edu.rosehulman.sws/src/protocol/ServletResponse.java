@@ -29,14 +29,20 @@
 package protocol;
 
 import java.io.File;
+import java.io.OutputStream;
 import java.util.Map;
+
+import server.Server;
 
 /**
  * 
  * @author Chandan R. Rupakheti (rupakhcr@clarkson.edu)
  */
 public class ServletResponse extends HttpResponse {
-
+	
+	protected OutputStream out;
+	protected Server server;
+	
 	/**
 	 * @param version
 	 * @param status
@@ -45,13 +51,27 @@ public class ServletResponse extends HttpResponse {
 	 * @param file
 	 */
 	public ServletResponse(String version, int status, String phrase, Map<String, String> header,
-			File file) {
+			File file, OutputStream out, Server server) {
 		super(version, status, phrase, header, file);
+		this.out = out;
+		this.server = server;
+	}
+	
+	public OutputStream getWriter() {
+		return this.out;
+	}
+	
+	public String getRootDirectory() {
+		return this.server.getRootDirectory();
+	}
+	
+	public void setStatus(int code) {
+		this.status = code;
 	}
 
 	@Override
 	public void populateFields(String connection) {
-		
+		fillGeneralHeader(connection);
 	}
 
 }
