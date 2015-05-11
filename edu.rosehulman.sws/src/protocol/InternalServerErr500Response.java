@@ -1,6 +1,6 @@
 /*
- * Servlet.java
- * May 3, 2015
+ * InternalServerErr500Response.java
+ * May 10, 2015
  *
  * Simple Web Server (SWS) for EE407/507 and CS455/555
  * 
@@ -28,23 +28,31 @@
  
 package protocol;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.File;
+import java.util.HashMap;
 
 /**
- * 
- * @author Chandan R. Rupakheti (rupakhcr@clarkson.edu)
+ * Class created for M3.
+ * @author Carly Heibel
  */
-public interface Servlet {
-	HttpRequest request = null;
-	ServletResponse response = null;
-	
-	public ServletResponse service(HttpRequest request, ServletResponse response);
+public class InternalServerErr500Response extends HttpResponse {
 
-//	/**
-//	 * @return
-//	 * @throws Exception 
-//	 * @throws Exception 
-//	 */
-//	ServletResponse service() throws Exception;
+	/**
+	 * A {@link HttpResponse} object representing 500 status.
+	 * 
+	 * @param version
+	 * @param status
+	 * @param phrase
+	 * @param header
+	 * @param file
+	 */
+	public InternalServerErr500Response(File file) {
+		super(Protocol.VERSION, Protocol.INTERNAL_SERVER_ERR_CODE, 
+				Protocol.INTERNAL_SERVER_ERR_TEXT, new HashMap<String, String>(), null);
+	}	
+	
+	@Override
+	public void populateFields(String connection) {
+		fillGeneralHeader(connection);
+	}
 }

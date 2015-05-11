@@ -38,12 +38,20 @@ import protocol.ServletResponse;
  * 
  * @author Chandan R. Rupakheti (rupakhcr@clarkson.edu)
  */
-public class HelloWorldServlet implements Servlet {
-
+public class HelloWorldServlet implements Servlet{
+//	private HttpRequest request;
+//	private ServletResponse response;
+//	
+//	public HelloWorldServlet(HttpRequest request, ServletResponse response) {
+//		this.request = request;
+//		this.response = response;
+//	}
+	
 	@Override
-	public ServletResponse service(HttpRequest request, ServletResponse response) {
+	public ServletResponse service(HttpRequest request, ServletResponse response){
 		// GET request servlet
 		try (OutputStream out = response.getWriter()) {
+//		OutputStream out = response.getWriter();
 			String content = "<html><head><title>TEST PAGE LOL</title></head><body>";
 			String content2 = "a line is here<br>now another <br></body></html>";
 			out.write(content.getBytes());
@@ -59,5 +67,10 @@ public class HelloWorldServlet implements Servlet {
 		}
 		
 	}
+
+//	@Override
+//	public void run() {
+//		// TODO Auto-generated method stub
+//	}
 
 }

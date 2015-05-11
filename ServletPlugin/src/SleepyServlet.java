@@ -1,5 +1,5 @@
 /*
- * HelloWorldServlet.java
+ * SleepyServlet.java
  * May 3, 2015
  *
  * Simple Web Server (SWS) for EE407/507 and CS455/555
@@ -26,45 +26,53 @@
  * http://clarkson.edu/~rupakhcr
  */
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-
 import protocol.HttpRequest;
 import protocol.Protocol;
+import protocol.RunnableServlet;
 import protocol.Servlet;
 import protocol.ServletResponse;
 
 /**
- * 
- * @author Chandan R. Rupakheti (rupakhcr@clarkson.edu)
+ * Class for M3 Performance Test 1
+ * @author Carly Heibel
  */
-public class HelloWorldPost implements Servlet {
+public class SleepyServlet implements RunnableServlet {
+	private HttpRequest request;
+	private ServletResponse response;
+	
+	public SleepyServlet(HttpRequest request, ServletResponse response) {
+		this.request = request;
+		this.response = response;
+	}
+	
+	
+	public void service() {
+			try {
+				for(int i = 1; i <= 5; i++) {
+					System.out.print(i + ", ");
+					Thread.sleep(1000);
+				}
+				response.setStatus(Protocol.OK_CODE);
+			} catch (InterruptedException e) {
+//				e.printStackTrace();
+				response.setStatus(Protocol.TIMEOUT_CODE);
+				response.setText(Protocol.TIMEOUT_TEXT);
+			}
+			
+//			return response;
+		
+	}
+
+	@Override
+	public void run() {
+		service();
+	}
+
+
 	@Override
 	public ServletResponse service(HttpRequest request, ServletResponse response) {
-		// This is a POST request
-		// Get root directory path from server
-		String rootDirectory = response.getRootDirectory();
-		
-		try {
-			//create new file or overwrite existing file with contents of request body 
-			PrintWriter writer = new PrintWriter(rootDirectory + "/" + request.getFilename(), "UTF-8");
-			writer.write(request.getBody());
-			writer.close();
-			
-			response.setBody(new String(request.getBody()));
-			System.out.println("body in servlet\n" + response.getBody());
-			response.setStatus(Protocol.OK_CODE);
-			return response;
-		} catch (FileNotFoundException e) {
-			
-			e.printStackTrace();
-			response.setStatus(Protocol.NOT_FOUND_CODE);
-			return response;
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-			response.setStatus(Protocol.BAD_REQUEST_CODE);
-			return response;
-		}
+		// TODO Auto-generated method stub
+		return null;
 	}
+
 }

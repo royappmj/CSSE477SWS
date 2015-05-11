@@ -42,6 +42,8 @@ public class HttpResponseFactory {
 		this.responseMap.put(Protocol.BAD_REQUEST_CODE, BadRequest400Response.class);
 		this.responseMap.put(Protocol.NOT_FOUND_CODE, FileNotFound404Response.class);
 //		responseMap.put(Protocol., 304Response.class);
+		this.responseMap.put(Protocol.TIMEOUT_CODE, Timeout408Response.class);
+		this.responseMap.put(Protocol.INTERNAL_SERVER_ERR_CODE, InternalServerErr500Response.class); // M3
 //		responseMap.put(Protocol., 505Response.class);
 	}
 	

@@ -1,6 +1,6 @@
 /*
- * Servlet.java
- * May 3, 2015
+ * RunnableServlet.java
+ * May 11, 2015
  *
  * Simple Web Server (SWS) for EE407/507 and CS455/555
  * 
@@ -28,23 +28,11 @@
  
 package protocol;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 /**
  * 
  * @author Chandan R. Rupakheti (rupakhcr@clarkson.edu)
  */
-public interface Servlet {
-	HttpRequest request = null;
-	ServletResponse response = null;
-	
-	public ServletResponse service(HttpRequest request, ServletResponse response);
+public interface RunnableServlet extends Servlet, Runnable{
+	public void service();
 
-//	/**
-//	 * @return
-//	 * @throws Exception 
-//	 * @throws Exception 
-//	 */
-//	ServletResponse service() throws Exception;
 }

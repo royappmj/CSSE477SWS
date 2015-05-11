@@ -55,6 +55,8 @@ public class ConnectionHandler implements Runnable {
 		this.textMap.put(Protocol.OK_CODE, Protocol.OK_TEXT);
 		this.textMap.put(Protocol.BAD_REQUEST_CODE, Protocol.BAD_REQUEST_TEXT);
 		this.textMap.put(Protocol.NOT_FOUND_CODE, Protocol.NOT_FOUND_TEXT);
+		this.textMap.put(Protocol.INTERNAL_SERVER_ERR_CODE, Protocol.INTERNAL_SERVER_ERR_TEXT);
+		this.textMap.put(Protocol.TIMEOUT_CODE, Protocol.TIMEOUT_TEXT);
 //		this.textMap.put(Protocol.OK_CODE, Protocol.OK_TEXT);
 //		this.textMap.put(Protocol.OK_CODE, Protocol.OK_TEXT);
 

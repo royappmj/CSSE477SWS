@@ -33,9 +33,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLStreamHandler;
-
-//import javax.ser
-
+import java.util.Arrays;
 /**
  * 
  * @author Chandan R. Rupakheti (rupakhcr@clarkson.edu)
@@ -47,8 +45,25 @@ public class ServletProcessor {
 		String locations[] = uri.split("/");
 		String pluginName = locations[2];
 		String servletName = locations[3];
-		request.setFilename(locations[4].substring(0, locations[4].contains("?") ?
-				locations[4].indexOf("?") : locations[4].length()));
+		// M3
+		if(locations.length > 5) {
+			response.setStatus(Protocol.BAD_REQUEST_CODE);
+			response.setText(Protocol.BAD_REQUEST_TEXT + " Cannot determine filename.");
+			return response;
+		}
+		// M3 (if + try/catch)
+
+		else if(!request.getMethod().equals(Protocol.GET)) {
+			try {
+				request.setFilename(locations[4].substring(0, locations[4].contains("?") ?
+						locations[4].indexOf("?") : locations[4].length()));
+			} catch (ArrayIndexOutOfBoundsException e) {
+				request.setFilename(null);
+				response.setStatus(Protocol.BAD_REQUEST_CODE);
+				response.setText(Protocol.BAD_REQUEST_TEXT + " No filename specified.");
+				return response;
+			}
+		}
 		URLClassLoader loader = null;
 
 		try {
@@ -71,18 +86,81 @@ public class ServletProcessor {
 			// System.out.println("Servlet Name is: " + servletName);
 			myClass = loader.loadClass(servletName);
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			System.out.println(e.toString());
+			// M3
+			response.setStatus(Protocol.BAD_REQUEST_CODE);
+			response.setText(Protocol.BAD_REQUEST_TEXT + " Class loader could not load class " + servletName);
+			return response;
 		}
-
+		
+		// M3 - to get rid of leakage warning that loader never gets closed
+		try {
+			loader.close();
+		} catch (IOException e1) {
+			response.setStatus(Protocol.INTERNAL_SERVER_ERR_CODE);
+			response.setText(Protocol.INTERNAL_SERVER_ERR_TEXT + " Class loader could not close properly.");
+			return response;
+		}
+		
 		Servlet servlet = null;
 		try {
 			//Servlet Class
-			servlet = (Servlet) myClass.newInstance();
-			return servlet.service(request, response);
+
+			if (Arrays.asList(myClass.getInterfaces()).contains(RunnableServlet.class)) {
+			// M3
+				servlet = (RunnableServlet) myClass.getDeclaredConstructor(Class.forName("protocol.HttpRequest"), 
+						Class.forName("protocol.ServletResponse")).newInstance(request, response);
+
+				
+				// M3
+				Thread t = new Thread((Runnable) servlet);
+				
+				long startTime = System.currentTimeMillis();
+				long endTime = startTime + 4 * 1000L;
+				
+				t.start();
+				while(System.currentTimeMillis() < endTime) {
+					try {
+						if(t.getState()!=Thread.State.TERMINATED)
+							Thread.sleep(10L);
+						else
+							break;
+					} catch (InterruptedException e) {
+						// Just fine
+
+					}
+				}
+				
+				boolean interrupted = false;
+				if(t.getState()!=Thread.State.TERMINATED) {
+					t.interrupt();
+					interrupted = true;
+					System.out.println("Stopped thread early");
+					response.setStatus(Protocol.TIMEOUT_CODE);
+					response.setText(Protocol.TIMEOUT_TEXT);
+				}
+				
+				t.join();
+				
+				if(interrupted == false) {
+				// Request finished in plenty of time
+					response.setStatus(Protocol.OK_CODE);
+					response.setText(Protocol.OK_TEXT);
+				}
+			}
+			else {
+				servlet = (Servlet) myClass.newInstance();
+				response = servlet.service(request, response);
+			}
+			return response;
+		} catch (InterruptedException e) {
+			response.setStatus(Protocol.TIMEOUT_CODE);
+			response.setText(Protocol.TIMEOUT_TEXT);
+			return response;
 		} catch (Throwable e) {
-			System.out.println(e.toString());
+			e.printStackTrace();
 			response.setStatus(Protocol.BAD_REQUEST_CODE);
+			// M3
+			response.setText(Protocol.BAD_REQUEST_TEXT + " Requested servlet does not exist.");
 			return response;
 		}
 	}
