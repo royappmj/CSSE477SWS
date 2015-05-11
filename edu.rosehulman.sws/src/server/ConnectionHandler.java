@@ -77,7 +77,9 @@ public class ConnectionHandler implements Runnable {
 	public void run() {
 		// Get the start time
 		long start = System.currentTimeMillis();
-
+		
+		System.out.println("new connection from ip: " + this.socket.getInetAddress().getHostAddress());
+		
 		InputStream inStream = null;
 		OutputStream outStream = null;
 		File file = null;
