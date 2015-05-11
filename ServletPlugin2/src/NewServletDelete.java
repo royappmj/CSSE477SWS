@@ -1,4 +1,6 @@
 import java.io.File;
+import java.io.FileNotFoundException;
+
 import protocol.HttpRequest;
 import protocol.Protocol;
 import protocol.Servlet;
@@ -12,9 +14,16 @@ import protocol.ServletResponse;
  *         Created May 6, 2015.
  */
 public class NewServletDelete implements Servlet {
-
+//	private HttpRequest request;
+//	private ServletResponse response;
+//	
+//	public NewServletDelete(HttpRequest request, ServletResponse response) {
+//		this.request = request;
+//		this.response = response;
+//	}
+	
 	@Override
-	public ServletResponse service(HttpRequest request, ServletResponse response) {
+	public ServletResponse service(HttpRequest request, ServletResponse response){
 		// DELETE request
 		String rootDirectory = response.getRootDirectory();
 		String dir = rootDirectory + "/" + request.getFilename();
@@ -25,6 +34,7 @@ public class NewServletDelete implements Servlet {
 			// Can't delete a file that doesn't exist
 			System.out.println("file doesn't exist");
 			response.setStatus(Protocol.NOT_FOUND_CODE);
+//			throw new FileNotFoundException();
 			return response;
 		}
 		else {
@@ -41,9 +51,9 @@ public class NewServletDelete implements Servlet {
 				//file couldn't be deleted
 				System.out.println("file can't be deleted");
 				response.setStatus(Protocol.BAD_REQUEST_CODE);
+//				throw new Exception();
 				return response;
 			}
 		}
 	}
-	
 }
