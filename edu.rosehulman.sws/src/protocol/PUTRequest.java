@@ -47,8 +47,8 @@ public class PUTRequest extends HttpRequest {
 	/**
 	 * @param file
 	 */
-	public PUTRequest(File file) {
-		super(file);
+	public PUTRequest() {
+		super();
 	}
 
 	@Override

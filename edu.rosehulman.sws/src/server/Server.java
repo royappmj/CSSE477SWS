@@ -75,6 +75,14 @@ public class Server implements Runnable {
 		return port;
 	}
 	
+	public long getConnections() {
+		return this.connections;
+	}
+	
+	public ServerSocket getSocket() {
+		return this.welcomeSocket;
+	}
+	
 	/**
 	 * Returns connections serviced per second. 
 	 * Synchronized to be used in threaded environment.
@@ -123,7 +131,7 @@ public class Server implements Runnable {
 				// Listen for incoming socket connection
 				// This method block until somebody makes a request
 				Socket connectionSocket = this.welcomeSocket.accept();
-				
+//				System.out.println("host in server: " + connectionSocket.getInetAddress().getHostAddress());
 				// Come out of the loop if the stop flag is set
 				if(this.stop)
 					break;

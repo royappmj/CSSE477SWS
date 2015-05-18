@@ -41,8 +41,8 @@ public class DELETERequest extends HttpRequest {
 	/**
 	 * @param file
 	 */
-	public DELETERequest(File file) {
-		super(file);
+	public DELETERequest() {
+		super();
 	}
 
 	@Override

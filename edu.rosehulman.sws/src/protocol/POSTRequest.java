@@ -44,8 +44,8 @@ public class POSTRequest extends HttpRequest {
 	/**
 	 * @param file
 	 */
-	public POSTRequest(File file) {
-		super(file);
+	public POSTRequest() {
+		super();
 	}
 
 	@Override

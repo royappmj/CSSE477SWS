@@ -85,6 +85,7 @@ public abstract class HttpResponse {
 
 		// Let's add extra header with provider info
 		this.put(Protocol.PROVIDER, Protocol.AUTHOR);
+		this.put("Access-Control-Allow-Origin", "http://127.0.0.1:8080");
 	}
 
 	/**

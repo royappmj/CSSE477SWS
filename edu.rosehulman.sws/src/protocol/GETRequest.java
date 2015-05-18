@@ -38,8 +38,8 @@ import server.Server;
  */
 public class GETRequest extends HttpRequest {
 
-	public GETRequest(File file) {
-		super(file);
+	public GETRequest() {
+		super();
 	}
 	
 	@Override

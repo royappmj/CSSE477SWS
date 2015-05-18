@@ -22,6 +22,7 @@
 package server;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -55,8 +56,6 @@ public class ConnectionHandler implements Runnable {
 		this.textMap.put(Protocol.OK_CODE, Protocol.OK_TEXT);
 		this.textMap.put(Protocol.BAD_REQUEST_CODE, Protocol.BAD_REQUEST_TEXT);
 		this.textMap.put(Protocol.NOT_FOUND_CODE, Protocol.NOT_FOUND_TEXT);
-		this.textMap.put(Protocol.INTERNAL_SERVER_ERR_CODE, Protocol.INTERNAL_SERVER_ERR_TEXT);
-		this.textMap.put(Protocol.TIMEOUT_CODE, Protocol.TIMEOUT_TEXT);
 //		this.textMap.put(Protocol.OK_CODE, Protocol.OK_TEXT);
 //		this.textMap.put(Protocol.OK_CODE, Protocol.OK_TEXT);
 
@@ -110,7 +109,6 @@ public class ConnectionHandler implements Runnable {
 			if(inStream == null) System.out.println("null");
 			request = HttpRequest.read(inStream);
 			
-//			if(request.getUri().startsWith("/plugins/"))
 			System.out.println(request.getUri());
 		} catch (ProtocolException pe) {
 			// We have some sort of protocol exception. Get its status code and create response
@@ -133,7 +131,6 @@ public class ConnectionHandler implements Runnable {
 			// Means there was an error, now write the response object to the socket
 			try {
 				response.write(outStream);
-				// System.out.println(response);
 			} catch (Exception e) {
 				// We will ignore this exception
 				e.printStackTrace();

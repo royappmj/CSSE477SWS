@@ -49,19 +49,16 @@ public class HttpRequestFactory {
 		this.requestMap = new HashMap<String, Class<? extends HttpRequest>>();
 		this.requestMap.put(Protocol.GET, GETRequest.class);
 		this.requestMap.put(Protocol.POST, POSTRequest.class);
-//		requestMap.put(Protocol.NOT_FOUND_CODE, FileNotFound404Response.class);
-//		responseMap.put(Protocol., 304Response.class);
-//		responseMap.put(Protocol., 505Response.class);
+		this.requestMap.put(Protocol.PUT, PUTRequest.class);
+		this.requestMap.put(Protocol.DELETE, DELETERequest.class);
 	}
 	
 	public HttpRequest createRequest(File file, String requestType) {
 		HttpRequest request = null;
 		try {
-			request = this.requestMap.get(requestType).getDeclaredConstructor(Class.forName("java.io.File")).
-					newInstance(file);
+			request = this.requestMap.get(requestType).getDeclaredConstructor().newInstance();
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException |
-				InvocationTargetException | NoSuchMethodException | SecurityException |
-				ClassNotFoundException exception) {
+				InvocationTargetException | NoSuchMethodException | SecurityException exception) {
 			exception.printStackTrace();
 		}
 		return request;

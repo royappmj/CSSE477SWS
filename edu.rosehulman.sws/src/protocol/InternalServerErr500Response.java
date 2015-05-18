@@ -49,7 +49,7 @@ public class InternalServerErr500Response extends HttpResponse {
 	public InternalServerErr500Response(File file) {
 		super(Protocol.VERSION, Protocol.INTERNAL_SERVER_ERR_CODE, 
 				Protocol.INTERNAL_SERVER_ERR_TEXT, new HashMap<String, String>(), null);
-	}	
+	}
 	
 	@Override
 	public void populateFields(String connection) {

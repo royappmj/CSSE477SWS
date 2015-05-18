@@ -126,7 +126,6 @@ public class WebServer extends JFrame {
 		// Compact the grid
 		SpringUtilities.makeCompactGrid(this.panelInput, 3, 2, 5, 5, 5, 5);
 
-
 		// Run server widgets
 		this.panelRunServer = new JPanel();
 		this.butStartServer = new JButton("Start Simple Web Server");
@@ -160,7 +159,7 @@ public class WebServer extends JFrame {
 				// Get hold of the current directory
 				String currentDirectory = WebServer.this.txtRootDirectory.getText();
 				JFileChooser fileChooser = new JFileChooser(currentDirectory);
-				fileChooser.setDialogTitle("Chose Web Server Root Directory");
+				fileChooser.setDialogTitle("Choose Web Server Root Directory");
 				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				fileChooser.setMultiSelectionEnabled(false);
 				fileChooser.setAcceptAllFileFilterUsed(false);

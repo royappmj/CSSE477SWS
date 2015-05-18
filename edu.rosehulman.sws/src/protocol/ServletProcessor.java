@@ -46,13 +46,15 @@ public class ServletProcessor {
 		String pluginName = locations[2];
 		String servletName = locations[3];
 		// M3
+//		System.out.println("Locations length = " + locations.length);
 		if(locations.length > 5) {
+			
 			response.setStatus(Protocol.BAD_REQUEST_CODE);
 			response.setText(Protocol.BAD_REQUEST_TEXT + " Cannot determine filename.");
 			return response;
 		}
 		// M3 (if + try/catch)
-
+/*
 		else if(!request.getMethod().equals(Protocol.GET)) {
 			try {
 				request.setFilename(locations[4].substring(0, locations[4].contains("?") ?
@@ -64,6 +66,7 @@ public class ServletProcessor {
 				return response;
 			}
 		}
+		*/
 		URLClassLoader loader = null;
 
 		try {
@@ -75,7 +78,7 @@ public class ServletProcessor {
 			String repository = (new URL("file", null, classPath.getCanonicalPath())).toString();
 			urls[0] = new URL(null, repository, streamHandler);
 			loader = new URLClassLoader(urls);
-			System.out.println(loader.getURLs()[0]);
+//			System.out.println("URLS ARE: " + loader.getURLs()[0]);
 		} catch (IOException e) {
 			System.out.println(e.toString());
 		}
@@ -148,6 +151,7 @@ public class ServletProcessor {
 				}
 			}
 			else {
+				System.out.println("myclass is: " + myClass);
 				servlet = (Servlet) myClass.newInstance();
 				response = servlet.service(request, response);
 			}

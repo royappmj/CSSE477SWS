@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hello, World!</title>
+
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="script.js" type="text/javascript"></script>
+
+		<!-- your files -->
+		<link href="style.css" type="text/css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<h1 class="left">Sample App</h1>
+
+		<button class="left" id="getall">GET ALL</button><br>
+		<span class="left">GET:</span>
+			<input class="short" type="text" id="getid" placeholder="ID"/>
+			<br>
+
+		<span class="left">POST:<span>
+			<input class="short" name="post" type="text" id="namein" placeholder="Name"/>
+			<input class="short" name="post" type="text" id="addrin" placeholder="Address"/>
+			<input class="short" name="post" type="text" id="phonein" placeholder="Phone Number"/>
+			<br>
+
+		<span class="left">PUT:<span>
+			<input class="short" name="put" type="text" id="putid" placeholder="ID"/>
+			<select class="short" id="putfield"/>
+				<option value="name">Name</option>
+				<option value="address">Addres</option>
+				<option value="phone">Phone Number</option>
+			</select>
+			<input class="short" name="put" type="text" id="putdata"/>
+			<br>
+
+		<span class="left">DELETE:</span>
+			<input class="short" type="text" id="deleteid" placeholder="ID"/>
+			<br>
+
+		<div id="output"></div>
+	</body>
+</html>

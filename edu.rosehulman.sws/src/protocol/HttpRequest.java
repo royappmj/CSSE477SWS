@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.Socket;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,18 +50,17 @@ public abstract class HttpRequest {
 	 * map containing the different kinds of requests
 	 */
 	protected static Map<String, HttpRequest> methodsMap = new HashMap<String, HttpRequest>() {{
-		put(Protocol.GET, new GETRequest(null));
-		put(Protocol.POST, new POSTRequest(null));
-		put(Protocol.PUT, new PUTRequest(null));
-		put(Protocol.DELETE, new DELETERequest(null));
+		put(Protocol.GET, new GETRequest());
+		put(Protocol.POST, new POSTRequest());
+		put(Protocol.PUT, new PUTRequest());
+		put(Protocol.DELETE, new DELETERequest());
 	}};
 	protected char[] body;
 	protected File file;
 	
-	public HttpRequest(File file) {
+	public HttpRequest() {
 		this.header = new HashMap<String, String>();
 		this.body = new char[0];
-		this.file = file;
 	}
 	
 	/**
@@ -152,6 +152,8 @@ public abstract class HttpRequest {
 			throw new ProtocolException(Protocol.BAD_REQUEST_CODE, Protocol.BAD_REQUEST_TEXT);
 		}
 		
+		System.out.println(line);
+		
 		String tMethod = tokenizer.nextToken();
 		HttpRequest request = methodsMap.get(tMethod);
 		
@@ -196,6 +198,7 @@ public abstract class HttpRequest {
 				// Now let's put the key=>value mapping to the header map
 				request.header.put(key, value);
 			}
+//			request.header.put("Access-Control-Allow-Origin", s.getInetAddress().getHostAddress());
 			
 			// Processed one more line, now let's read another header line and loop
 			line = reader.readLine().trim();

@@ -41,8 +41,8 @@ public class ServletRequest extends HttpRequest {
 	/**
 	 * @param file
 	 */
-	public ServletRequest(File file) {
-		super(file);
+	public ServletRequest() {
+		super();
 	}
 
 	@Override
